@@ -40,10 +40,11 @@ services:
     networks:
       - backend
     volumes:
-      - ./images:/app/images
+      - images_data:/app/images
 
 volumes:
   mysql_data:
+  images_data:
 
 networks:
   backend:
