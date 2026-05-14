@@ -33,9 +33,12 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - backend
+    volumes:
+      - images_data:/ecommerce-app/images
 
 volumes:
   mysql_data:
+  images_data:
 
 networks:
   backend:

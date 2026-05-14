@@ -5,25 +5,31 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadFile {
-   
-    private final String FOLDER = "images//";
+
+    private final String FOLDER = "/ecommerce-app/images/";
     private final String IMG_DEFAULT = "default.png";
-    
-    public String upload(MultipartFile multipartFile) throws IOException{
-        if (multipartFile != null && !multipartFile.isEmpty()) {
-            byte [] bytes = multipartFile.getBytes();
-            Path path = Paths.get(FOLDER + multipartFile.getOriginalFilename());
-            Files.write(path, bytes);
-            return multipartFile.getOriginalFilename();
-            
+
+    public String upload(MultipartFile multipartFile) throws IOException {
+
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            return IMG_DEFAULT;
         }
-        return IMG_DEFAULT;
-    }
-    public void delete(String nameFile){
-        File file = new File(FOLDER + nameFile);
-        file.delete();
+
+        File folder = new File(FOLDER);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        String fileName = UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
+
+        Path path = Paths.get(FOLDER + fileName);
+        Files.write(path, multipartFile.getBytes());
+
+        return fileName;
     }
 }
