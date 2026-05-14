@@ -32,4 +32,11 @@ public class UploadFile {
 
         return fileName;
     }
+
+    public void delete(String nameFile) {
+        File file = new File(FOLDER + nameFile);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 }
