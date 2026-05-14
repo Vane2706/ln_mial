@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{he_fo_us::head}"></head>
+
+<style>
+    body {
+        background-color: #f8f9fc;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* HERO / CAROUSEL */
+    .carousel-item img {
+        height: 90vh;
+        object-fit: cover;
+        filter: brightness(0.75);
+    }
+
+    .carousel-caption {
+        bottom: 20%;
+    }
+
+    .carousel-caption h5 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .carousel-caption p {
+        font-size: 1.2rem;
+    }
+
+    /* BOTONES */
+    .btn-main {
+        background: #0dcaf0;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .btn-main:hover {
+        background: #0bbcd6;
+        transform: translateY(-2px);
+    }
+
+    /* SECCIONES */
+    .section {
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .section h2 {
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .section p {
+        color: #6c757d;
+        max-width: 700px;
+        margin: auto;
+    }
+
+    /* CARDS */
+    .card-custom {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        transition: 0.3s;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+
+    .card-custom img {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    /* SPLIT SECTION */
+    .split-img {
+        height: 70vh;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    /* WHATSAPP */
+    .btn-whatsapp {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #25D366;
+        color: white;
+        font-size: 24px;
+        padding: 15px;
+        border-radius: 50%;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+        .carousel-item img {
+            height: 60vh;
+        }
+
+        .carousel-caption h5 {
+            font-size: 1.5rem;
+        }
+
+        .split-img {
+            height: 40vh;
+        }
+    }
+</style>
+
+<body class="d-flex flex-column min-vh-100">
+
+<div th:insert="~{he_fo_us::header}"></div>
+
+<main class="flex-grow-1">
+
+    <!-- 🔥 HERO CAROUSEL -->
+    <section id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+            <div class="carousel-item active">
+                <img th:src="@{/img/fondo1.jpg}" class="d-block w-100">
+                <div class="carousel-caption">
+                    <h5>Elegancia que Enamora</h5>
+                    <p>Descubre lo mejor en lencería premium</p>
+                    <a th:href="@{/index/products}" class="btn btn-main mt-3">Comprar Ahora</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 🔥 INTRO -->
+    <section class="section bg-white">
+        <div class="container">
+            <h2>✨ Descubre tu mejor versión ✨</h2>
+            <p class="lead">Diseños elegantes, modernos y pensados para resaltar tu belleza natural.</p>
+        </div>
+    </section>
+
+    <!-- 🔥 PRODUCTOS DESTACADOS -->
+    <section class="section">
+        <div class="container">
+            <h2>Productos Destacados</h2>
+
+            <div class="row g-4 mt-4">
+
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <img th:src="@{/img/fondo4.png}">
+                        <div class="p-3">
+                            <h5>Conjunto Elegante</h5>
+                            <p class="text-muted">Encaje premium</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <img th:src="@{/img/fondo5.png}">
+                        <div class="p-3">
+                            <h5>Diseño Exclusivo</h5>
+                            <p class="text-muted">Edición limitada</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <img th:src="@{/img/fondo6.png}">
+                        <div class="p-3">
+                            <h5>Estilo Moderno</h5>
+                            <p class="text-muted">Tendencia 2026</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 🔥 SPLIT IMAGES -->
+    <section class="container-fluid p-0">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img th:src="@{/img/fondo2.jpg}" class="split-img">
+            </div>
+            <div class="col-md-6">
+                <img th:src="@{/img/fondo3.jpg}" class="split-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 🔥 FINAL -->
+    <section class="section bg-white">
+        <div class="container">
+            <h2>🌹 Diseñado para ti</h2>
+            <p class="lead">
+                Cada prenda refleja elegancia, confianza y autenticidad. Porque sentirte bien es lo más importante.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/51928581983" class="btn-whatsapp" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<div th:insert="~{he_fo_us::footer}"></div>
+
+</body>
+</html>

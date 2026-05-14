@@ -1,0 +1,78 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN_HOME'
+    }
+
+    environment {
+        REPO_URL = 'https://github.com/TU_USUARIO/TU_REPO.git'
+        APP_CONTAINER = 'ecommerce_app'
+        DB_CONTAINER = 'mysql-ecommerce'
+        DB_NAME = 'ecommerce_lp2_prod'
+        DB_USER = 'root'
+        DB_PASS = 'admin123'
+    }
+
+    stages {
+
+        stage('Clone') {
+            steps {
+                cleanWs()
+                git url: "${REPO_URL}"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                dir('docker') {
+                    script {
+
+                        sh 'docker-compose down -v || true'
+
+                        sh 'docker-compose up -d --build'
+
+                        sleep 20
+
+                        sh "docker logs --tail 50 ${APP_CONTAINER}"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'PIPELINE EXITOSO 🚀'
+        }
+        failure {
+            echo 'PIPELINE FALLÓ ❌'
+        }
+    }
+}

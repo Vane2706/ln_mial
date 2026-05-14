@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{he_fo_us::head}"></head>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card-register {
+        background: #fff;
+        border-radius: 20px;
+        padding: 40px;
+        width: 100%;
+        max-width: 850px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .form-control {
+        border-radius: 12px;
+        height: 45px;
+    }
+
+    .btn-primary {
+        border-radius: 12px;
+        height: 45px;
+        background: #0dcaf0;
+        border: none;
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background: #0bbcd6;
+    }
+
+    @media(max-width:768px){
+        .card-register {
+            padding: 25px;
+        }
+    }
+</style>
+
+<body>
+
+<div class="card-register">
+
+    <div class="text-center mb-4">
+        <a th:href="@{/home}">
+            <img th:src="@{/img/LN_MIAL.png}" width="120">
+        </a>
+        <h3 class="fw-bold mt-2">Crear Cuenta</h3>
+        <p class="text-muted">Regístrate para continuar</p>
+    </div>
+
+    <form th:action="@{/register}" method="post">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label>Nombre completo</label>
+                <input type="text" class="form-control" name="firstName" placeholder="Juan Pérez" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Correo</label>
+                <input type="email" class="form-control" name="email" placeholder="correo@email.com" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Whatsapp</label>
+                <input type="text" class="form-control" name="cellphone" placeholder="999999999">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Contraseña</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="••••••">
+                    <button type="button" class="btn btn-light" onclick="togglePassword()">
+                        <i id="toggleIcon" class="fa fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary w-100 mt-3">Crear Cuenta</button>
+
+    </form>
+
+    <div class="text-center mt-4">
+        <small>¿Ya tienes cuenta?
+            <a th:href="@{/login}" class="fw-bold text-decoration-none">Inicia sesión</a>
+        </small>
+    </div>
+
+</div>
+
+<script>
+    function togglePassword(){
+        let input = document.getElementById("password");
+        let icon = document.getElementById("toggleIcon");
+
+        if(input.type === "password"){
+            input.type = "text";
+            icon.classList.replace("fa-eye","fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.replace("fa-eye-slash","fa-eye");
+        }
+    }
+</script>
+
+</body>
+</html>
