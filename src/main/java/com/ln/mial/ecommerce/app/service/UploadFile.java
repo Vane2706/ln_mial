@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class UploadFile {
 
-    private final String FOLDER = "/ecommerce-app/images/";
+    private final String FOLDER = "/app/images/";
     private final String IMG_DEFAULT = "default.png";
 
     public String upload(MultipartFile multipartFile) throws IOException {
@@ -20,23 +20,28 @@ public class UploadFile {
             return IMG_DEFAULT;
         }
 
-        File folder = new File(FOLDER);
-        if (!folder.exists()) {
-            folder.mkdirs();
+        Path folderPath = Paths.get(FOLDER);
+
+        if (!Files.exists(folderPath)) {
+            Files.createDirectories(folderPath);
         }
 
         String fileName = UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
 
-        Path path = Paths.get(FOLDER + fileName);
-        Files.write(path, multipartFile.getBytes());
+        Path filePath = folderPath.resolve(fileName);
+
+        Files.write(filePath, multipartFile.getBytes());
 
         return fileName;
     }
 
     public void delete(String nameFile) {
-        File file = new File(FOLDER + nameFile);
-        if (file.exists()) {
-            file.delete();
+        Path path = Paths.get(FOLDER + nameFile);
+
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            System.out.println("Error al eliminar imagen: " + e.getMessage());
         }
     }
 }

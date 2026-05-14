@@ -16,6 +16,11 @@ services:
       - ./sql:/docker-entrypoint-initdb.d
     networks:
       - backend
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
@@ -23,7 +28,8 @@ services:
       dockerfile: docker/Dockerfile
     container_name: ecommerce_app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8082:8082"
     environment:
@@ -34,11 +40,10 @@ services:
     networks:
       - backend
     volumes:
-      - images_data:/ecommerce-app/images
+      - ./images:/app/images
 
 volumes:
   mysql_data:
-  images_data:
 
 networks:
   backend:
