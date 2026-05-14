@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        REPO_URL = 'https://github.com/TU_USUARIO/TU_REPO.git'
+        REPO_URL = 'https://github.com/Vane2706/ln_mial.git'
         APP_CONTAINER = 'ecommerce_app'
         DB_CONTAINER = 'mysql-ecommerce'
         DB_NAME = 'ecommerce_lp2_prod'
