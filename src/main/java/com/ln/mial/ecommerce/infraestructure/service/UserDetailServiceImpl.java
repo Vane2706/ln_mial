@@ -15,7 +15,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private final LoginService loginService;
     private final Integer USER_NOT_FOUND = 0;
     @Autowired
-    private HttpSession httpSession;
+    HttpSession httpSession;
 
     public UserDetailServiceImpl(LoginService loginService) {
         this.loginService = loginService;
