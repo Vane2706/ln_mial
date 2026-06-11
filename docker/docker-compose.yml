@@ -9,6 +9,12 @@ services:
     environment:
       MYSQL_DATABASE: ecommerce_lp2_prod
       MYSQL_ROOT_PASSWORD: admin123
+    # === OPTIMIZACIÓN DE MEMORIA PARA MAQUINAS DE 1GB DE RAM ===
+    command: --innodb_buffer_pool_size=64M --innodb_log_buffer_size=16M --max_connections=50
+    deploy:
+      resources:
+        limits:
+          memory: 400M
     ports:
       - "3307:3306"
     volumes:
@@ -18,7 +24,7 @@ services:
       - backend
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
+      interval: 15s  # Más tiempo entre verificaciones para no saturar
       timeout: 5s
       retries: 5
 
@@ -41,6 +47,7 @@ services:
       - backend
     volumes:
       - images_data:/app/images
+    # Mantiene los 15 segundos de espera para que MySQL respire
     command: ["sh", "-c", "sleep 15 && java -jar app.jar"]
 
 volumes:
