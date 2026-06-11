@@ -24,9 +24,10 @@ services:
       - backend
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 15s  # Más tiempo entre verificaciones para no saturar
+      interval: 20s
       timeout: 5s
-      retries: 5
+      retries: 4
+      start_period: 20s
 
   app:
     build:
