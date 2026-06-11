@@ -1,1 +1,66 @@
-#Codigo para generar acción a docker en aws
+name: CI/CD - AWS Docker Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+env:
+  DOCKER_PROJECT_NAME: 'ecomapp'
+  APP_CONTAINER_NAME: 'ecommerce_app'
+  DB_CONTAINER_NAME: 'mysql-ecommerce'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to AWS
+    runs-on: ubuntu-latest  # Cambiado a Linux nativo de GitHub
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build JAR with Maven
+        run: mvn -B clean package -DskipTests
+
+      - name: Tar de archivos necesarios para despliegue
+        run: |
+          tar -cvf deploy.tar docker/ target/ecommerce-*.jar
+
+      - name: Configurar llave SSH para AWS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          source: "deploy.tar"
+          target: "/home/ubuntu/app"
+
+      - name: Ejecutar comandos de Docker en AWS via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/app
+            tar -xvf deploy.tar
+            cd docker
+            
+            echo "Deteniendo contenedores anteriores..."
+            docker compose -p ${{ env.DOCKER_PROJECT_NAME }} down -v --remove-orphans
+            
+            echo "Construyendo e iniciando servicios en AWS..."
+            docker compose -p ${{ env.DOCKER_PROJECT_NAME }} up -d --build
+            
+            echo "Verificando contenedores..."
+            docker compose -p ${{ env.DOCKER_PROJECT_NAME }} ps
+            
+            echo "Mostrando logs del contenedor de la aplicación..."
+            docker logs --tail 50 ${{ env.APP_CONTAINER_NAME }}
