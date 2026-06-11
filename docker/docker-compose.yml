@@ -9,7 +9,6 @@ services:
     environment:
       MYSQL_DATABASE: ecommerce_lp2_prod
       MYSQL_ROOT_PASSWORD: admin123
-    # === OPTIMIZACIÓN DE MEMORIA PARA MAQUINAS DE 1GB DE RAM ===
     command: --innodb_buffer_pool_size=64M --innodb_log_buffer_size=16M --max_connections=50
     deploy:
       resources:
@@ -48,8 +47,6 @@ services:
       - backend
     volumes:
       - images_data:/app/images
-    # Mantiene los 15 segundos de espera para que MySQL respire
-    command: ["sh", "-c", "sleep 15 && java -jar app.jar"]
 
 volumes:
   mysql_data:
